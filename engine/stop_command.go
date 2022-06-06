@@ -7,5 +7,5 @@ func NewStopCommand() *stopCommand {
 type stopCommand struct{}
 
 func (s stopCommand) Execute(h Handler) {
-	h.(*EventLoop).stop = true
+	h.(*Loop).stop = true
 }

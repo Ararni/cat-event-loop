@@ -8,10 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type catCommand struct {
-	arg1, arg2 string
-}
-
 // Must return print command
 func TestParserPrint(t *testing.T) {
 	commandString := "print Hello world"

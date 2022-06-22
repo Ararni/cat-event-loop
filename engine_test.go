@@ -40,3 +40,14 @@ func TestParserDefault(t *testing.T) {
 		assert.IsType(t, reflect.TypeOf(examplePrint), reflect.TypeOf(command))
 	}
 }
+
+// Must return error for posting a command after event loop has stopped
+func TestPostingStop(t *testing.T) {
+	commandString := engine.NewPrintCommand("Hello world")
+	eventLoop := new(engine.Loop)
+	eventLoop.Start()
+	eventLoop.AwaitFinish()
+
+	err := eventLoop.Post(commandString)
+	assert.Error(t, err)
+}

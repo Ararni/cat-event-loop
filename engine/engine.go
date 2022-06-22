@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"errors"
 	"sync"
 )
 
@@ -9,7 +10,7 @@ type Command interface {
 }
 
 type Handler interface {
-	Post(cmd Command)
+	Post(cmd Command) error
 }
 
 type Loop struct {
@@ -34,8 +35,14 @@ func (l *Loop) Start() {
 	}()
 }
 
-func (l *Loop) Post(cmd Command) {
+func (l *Loop) Post(cmd Command) error {
 	l.q.push(cmd)
+	if l.stop {
+		return errors.New("error! posting command after event loop has stopped")
+	} else {
+		l.q.push(cmd)
+		return nil
+	}
 }
 
 func (l *Loop) AwaitFinish() {
